@@ -643,6 +643,14 @@
       z-index: 101;
     }
 
+    #btn-cerrar-carrito {
+      font-size: 1.3rem;
+      border: none;
+      background: none;
+      cursor: pointer;
+      float: right;
+    }
+
     .overlay-abierto {
       opacity: 1;
     }
@@ -711,7 +719,9 @@
     </div>
   </header>
   <div id="overlay-carrito"></div>
-  <div id="panel-carrito"></div>
+  <div id="panel-carrito">
+    <button id="btn-cerrar-carrito">✕</button>
+  </div>
   <div class="ribbon"></div>
 
   <section class="hero">
@@ -901,6 +911,15 @@
       overlay.classList.add("overlay-abierto");
       panel.classList.add("panel-abierto");
     });
+    const botonCerrar = document.getElementById("btn-cerrar-carrito");
+
+    function cerrarCarrito() {
+      overlay.classList.remove("overlay-abierto");
+      panel.classList.remove("panel-abierto");
+    }
+
+    botonCerrar.addEventListener("click", cerrarCarrito);
+    overlay.addEventListener("click", cerrarCarrito);
   </script>
 
   <div class="ribbon"></div>
