@@ -643,6 +643,31 @@
       z-index: 101;
     }
 
+    #btn-carrito {
+      position: relative;
+    }
+
+    #carrito-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--pink-deep);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+    }
+
+    #carrito-badge.oculto {
+      display: none;
+    }
+
     #btn-cerrar-carrito {
       font-size: 1.3rem;
       border: none;
@@ -816,7 +841,7 @@
         <a href="#sobre">Nosotros</a>
         <a href="#contacto">Contacto</a>
       </nav>
-      <button id="btn-carrito">🛒</button>
+      <button id="btn-carrito">🛒<span id="carrito-badge" class="oculto">0</span></button>
       <a class="btn btn-primary" href="https://wa.me/51931189917" target="_blank" rel="noopener">
         💬 Pedir por WhatsApp
       </a>
@@ -833,7 +858,7 @@
         <span id="carrito-total-monto">S/ 0</span>
       </div>
       <a class="btn btn-primary" id="btn-finalizar-pedido" href="#" target="_blank" rel="noopener">
-        💬 Finalizar pedido por WhatsApp
+        🛍️ Comprar ahora
       </a>
     </div>
   </div>
@@ -919,7 +944,8 @@
       { id: "dia-del-padre", nombre: "Día del Padre", emoji: "👔", habilitado: false },
       { id: "dia-de-la-madre", nombre: "Día de la Madre", emoji: "👩", habilitado: false },
       { id: "dia-del-maestro", nombre: "Día del Maestro", emoji: "🍎", habilitado: true },
-      { id: "flores-amarillas", nombre: "Flores Amarillas", emoji: "🌼", habilitado: true }
+      { id: "flores-amarillas", nombre: "Flores Amarillas", emoji: "🌼", habilitado: true },
+      { id: "extras", nombre: "Extras", emoji: "✨", habilitado: true }
       // 👆 Copia este tipo de bloque (con la coma arriba) para agregar una categoría nueva
     ];
 
@@ -951,6 +977,27 @@
         descripcion: "Globo burbuja lila, rosas y chocolates en presentación metálica.",
         precio: 100,
         categoria: "ramos-buchones"
+      },
+      {
+        foto: "extra-fotoroca.jpg",
+        nombre: "Fotoroca personalizada",
+        descripcion: "Piedra decorativa con tu foto favorita grabada.",
+        precio: 25,
+        categoria: "extras"
+      },
+      {
+        foto: "extra-taza-magica.jpg",
+        nombre: "Taza mágica personalizada",
+        descripcion: "Taza que revela tu foto o diseño al agregar líquido caliente.",
+        precio: 35,
+        categoria: "extras"
+      },
+      {
+        foto: "extra-vinil.jpg",
+        nombre: "Vinil decorativo personalizado",
+        descripcion: "Adhesivo de vinil con el diseño o nombre que elijas.",
+        precio: 15,
+        categoria: "extras"
       }
       // 👆 Copia este tipo de bloque (con la coma arriba) para agregar un producto nuevo
     ];
@@ -975,7 +1022,7 @@
           <h3>${producto.nombre}</h3>
           <p>${producto.descripcion}</p>
           <span class="prod-price">${formatearPrecio(producto.precio)}</span><br>
-          <button class="prod-link btn-agregar-carrito" data-foto="${producto.foto}" style="border:none;cursor:pointer;background:none;font:inherit;">Deseo este detalle →</button>
+          <button class="prod-link btn-agregar-carrito" data-foto="${producto.foto}" style="border:none;cursor:pointer;background:none;font:inherit;">🛒 Añadir al carrito</button>
         </div>
       </div>`;
     }
@@ -994,7 +1041,9 @@
       grid.querySelectorAll(".btn-agregar-carrito").forEach(btn => {
         btn.addEventListener("click", () => {
           agregarAlCarrito(btn.dataset.foto);
-          abrirCarrito();
+          const textoOriginal = btn.textContent;
+          btn.textContent = "✓ Agregado";
+          setTimeout(() => { btn.textContent = textoOriginal; }, 1000);
         });
       });
     }
@@ -1065,6 +1114,11 @@
       const lista = document.getElementById("lista-carrito");
       const totalMonto = document.getElementById("carrito-total-monto");
       const btnFinalizar = document.getElementById("btn-finalizar-pedido");
+      const badge = document.getElementById("carrito-badge");
+
+      const totalItems = carrito.reduce((suma, item) => suma + item.cantidad, 0);
+      badge.textContent = totalItems;
+      badge.classList.toggle("oculto", totalItems === 0);
 
       lista.innerHTML = carrito.length
         ? carrito.map(item => `
