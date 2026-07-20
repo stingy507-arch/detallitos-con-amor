@@ -651,6 +651,110 @@
       float: right;
     }
 
+    #panel-carrito {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #panel-carrito h3 {
+      padding: 20px 20px 10px;
+      color: var(--pink-deep);
+    }
+
+    #lista-carrito {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 20px;
+    }
+
+    .carrito-vacio {
+      color: var(--plum-soft, #7a6270);
+      text-align: center;
+      padding: 30px 10px;
+      font-weight: 700;
+    }
+
+    .carrito-item {
+      display: flex;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(196, 20, 94, 0.12);
+    }
+
+    .carrito-item img {
+      width: 56px;
+      height: 56px;
+      object-fit: cover;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .carrito-item-info {
+      flex: 1;
+    }
+
+    .carrito-item-info h4 {
+      font-size: 0.9rem;
+      color: var(--pink-deep);
+      margin: 0 0 2px;
+    }
+
+    .carrito-item-precio {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--plum-soft, #7a6270);
+    }
+
+    .carrito-item-qty {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .carrito-qty-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--pink-pastel);
+      background: var(--white, #fff);
+      color: var(--pink-deep);
+      font-weight: 800;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .carrito-item-quitar {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: #B23A3A;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    #carrito-footer {
+      padding: 16px 20px 20px;
+      border-top: 1px solid rgba(196, 20, 94, 0.15);
+    }
+
+    #carrito-total {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 800;
+      color: var(--pink-deep);
+      margin-bottom: 12px;
+      font-size: 1.05rem;
+    }
+
+    #btn-finalizar-pedido {
+      display: block;
+      width: 100%;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
     .overlay-abierto {
       opacity: 1;
     }
@@ -722,6 +826,16 @@
   <div id="panel-carrito">
     <h3>Mi pedido</h3>
     <button id="btn-cerrar-carrito">✕</button>
+    <div id="lista-carrito"></div>
+    <div id="carrito-footer">
+      <div id="carrito-total">
+        <span>Total</span>
+        <span id="carrito-total-monto">S/ 0</span>
+      </div>
+      <a class="btn btn-primary" id="btn-finalizar-pedido" href="#" target="_blank" rel="noopener">
+        💬 Finalizar pedido por WhatsApp
+      </a>
+    </div>
   </div>
   <div class="ribbon"></div>
 
@@ -854,7 +968,6 @@
     }
 
     function crearTarjeta(producto) {
-      const mensaje = encodeURIComponent(`Hola, me interesa el ${producto.nombre} (${formatearPrecio(producto.precio)})`);
       return `
       <div class="prod-card">
         <div class="prod-photo"><img src="img/${producto.foto}" alt="${producto.nombre}"></div>
@@ -862,7 +975,7 @@
           <h3>${producto.nombre}</h3>
           <p>${producto.descripcion}</p>
           <span class="prod-price">${formatearPrecio(producto.precio)}</span><br>
-          <a class="prod-link" href="https://wa.me/${numeroWhatsapp}?text=${mensaje}" target="_blank" rel="noopener">Pedir este detalle →</a>
+          <button class="prod-link btn-agregar-carrito" data-foto="${producto.foto}" style="border:none;cursor:pointer;background:none;font:inherit;">Deseo este detalle →</button>
         </div>
       </div>`;
     }
@@ -876,6 +989,14 @@
       grid.innerHTML = lista.length
         ? lista.map(crearTarjeta).join("")
         : `<p class="catalogo-vacio">Aún no hay detalles en esta categoría. ¡Vuelve pronto! 💕</p>`;
+
+      // Cada vez que se redibuja el catálogo hay que reconectar los botones nuevos
+      grid.querySelectorAll(".btn-agregar-carrito").forEach(btn => {
+        btn.addEventListener("click", () => {
+          agregarAlCarrito(btn.dataset.foto);
+          abrirCarrito();
+        });
+      });
     }
 
     function renderFiltros() {
@@ -903,16 +1024,99 @@
     }
  
     
+    /* ==================== CARRITO DE COMPRAS ====================
+       "carrito" guarda qué productos eligió el cliente y en qué cantidad.
+       Cada vez que cambia algo, se vuelve a dibujar el panel con renderCarrito().
+    ================================================================ */
+    let carrito = [];
+
+    function agregarAlCarrito(foto) {
+      const producto = productos.find(p => p.foto === foto);
+      if (!producto) return;
+      const existente = carrito.find(item => item.foto === foto);
+      if (existente) {
+        existente.cantidad++;
+      } else {
+        carrito.push({ foto: producto.foto, nombre: producto.nombre, precio: producto.precio, cantidad: 1 });
+      }
+      renderCarrito();
+    }
+
+    function cambiarCantidad(foto, delta) {
+      const item = carrito.find(i => i.foto === foto);
+      if (!item) return;
+      item.cantidad += delta;
+      if (item.cantidad <= 0) {
+        carrito = carrito.filter(i => i.foto !== foto);
+      }
+      renderCarrito();
+    }
+
+    function quitarDelCarrito(foto) {
+      carrito = carrito.filter(i => i.foto !== foto);
+      renderCarrito();
+    }
+
+    function calcularTotalCarrito() {
+      return carrito.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
+    }
+
+    function renderCarrito() {
+      const lista = document.getElementById("lista-carrito");
+      const totalMonto = document.getElementById("carrito-total-monto");
+      const btnFinalizar = document.getElementById("btn-finalizar-pedido");
+
+      lista.innerHTML = carrito.length
+        ? carrito.map(item => `
+          <div class="carrito-item">
+            <img src="img/${item.foto}" alt="${item.nombre}">
+            <div class="carrito-item-info">
+              <h4>${item.nombre}</h4>
+              <span class="carrito-item-precio">${formatearPrecio(item.precio)} c/u</span>
+              <div class="carrito-item-qty">
+                <button class="carrito-qty-btn" data-foto="${item.foto}" data-delta="-1">−</button>
+                <span>${item.cantidad}</span>
+                <button class="carrito-qty-btn" data-foto="${item.foto}" data-delta="1">+</button>
+                <button class="carrito-item-quitar" data-foto="${item.foto}">Quitar</button>
+              </div>
+            </div>
+          </div>`).join("")
+        : `<p class="carrito-vacio">Tu carrito está vacío 🎀<br>Elige tus detalles desde el catálogo.</p>`;
+
+      totalMonto.textContent = formatearPrecio(calcularTotalCarrito());
+
+      lista.querySelectorAll(".carrito-qty-btn").forEach(btn => {
+        btn.addEventListener("click", () => cambiarCantidad(btn.dataset.foto, Number(btn.dataset.delta)));
+      });
+      lista.querySelectorAll(".carrito-item-quitar").forEach(btn => {
+        btn.addEventListener("click", () => quitarDelCarrito(btn.dataset.foto));
+      });
+
+      // Arma el mensaje de WhatsApp con el resumen completo del pedido
+      if (carrito.length) {
+        let texto = "Hola, quiero hacer este pedido:\n\n";
+        carrito.forEach(item => {
+          texto += `• ${item.nombre} x${item.cantidad} — ${formatearPrecio(item.precio * item.cantidad)}\n`;
+        });
+        texto += `\nTotal: ${formatearPrecio(calcularTotalCarrito())}`;
+        btnFinalizar.href = `https://wa.me/${numeroWhatsapp}?text=${encodeURIComponent(texto)}`;
+      } else {
+        btnFinalizar.href = `https://wa.me/${numeroWhatsapp}`;
+      }
+    }
+
+    function abrirCarrito() {
+      overlay.classList.add("overlay-abierto");
+      panel.classList.add("panel-abierto");
+    }
+
     renderFiltros();
     renderCatalogo();
     const botonCarrito = document.getElementById("btn-carrito");
     const overlay = document.getElementById("overlay-carrito");
     const panel = document.getElementById("panel-carrito");
 
-    botonCarrito.addEventListener("click", function () {
-      overlay.classList.add("overlay-abierto");
-      panel.classList.add("panel-abierto");
-    });
+    botonCarrito.addEventListener("click", abrirCarrito);
     const botonCerrar = document.getElementById("btn-cerrar-carrito");
 
     function cerrarCarrito() {
@@ -922,6 +1126,8 @@
 
     botonCerrar.addEventListener("click", cerrarCarrito);
     overlay.addEventListener("click", cerrarCarrito);
+
+    renderCarrito();
   </script>
 
   <div class="ribbon"></div>
