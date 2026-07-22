@@ -798,6 +798,151 @@
       right: 0;
     }
 
+    /* ==================== MODAL DE VISTA RÁPIDA DE PRODUCTO ==================== */
+
+    #overlay-modal-producto {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      z-index: 200;
+      pointer-events: none;
+    }
+
+    #overlay-modal-producto.overlay-abierto {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #modal-producto {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -48%);
+      width: min(92vw, 820px);
+      max-height: 88vh;
+      overflow-y: auto;
+      background: var(--cream);
+      border-radius: 24px;
+      z-index: 201;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    #modal-producto.modal-abierto {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translate(-50%, -50%);
+    }
+
+    #btn-cerrar-modal-producto {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      font-size: 1.4rem;
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: var(--pink-deep);
+      z-index: 5;
+    }
+
+    #modal-producto-contenido {
+      display: flex;
+      gap: 24px;
+      padding: 30px;
+    }
+
+    #modal-producto-imagenes {
+      flex: 1;
+      min-width: 0;
+    }
+
+    #modal-producto-img-principal {
+      width: 100%;
+      border-radius: 16px;
+      object-fit: cover;
+      cursor: zoom-in;
+      transition: transform 0.2s ease;
+    }
+
+    #modal-producto-img-principal.zoom {
+      transform: scale(1.6);
+      cursor: zoom-out;
+    }
+
+    #modal-producto-miniaturas {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      overflow-x: auto;
+    }
+
+    #modal-producto-miniaturas img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 10px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      flex-shrink: 0;
+    }
+
+    #modal-producto-miniaturas img.activa {
+      border-color: var(--pink-deep);
+    }
+
+    #modal-producto-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #modal-producto-nombre {
+      color: var(--pink-deep);
+      margin-bottom: 10px;
+    }
+
+    #modal-producto-descripcion {
+      color: var(--plum-soft, #7a6270);
+      margin-bottom: 16px;
+    }
+
+    #modal-producto-precio {
+      display: inline-block;
+      background: var(--pink-pastel-2);
+      color: var(--pink-deep);
+      font-weight: 800;
+      padding: 8px 18px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+      align-self: flex-start;
+    }
+
+    #modal-producto-agregar {
+      margin-top: auto;
+      background: var(--pink-deep);
+      color: #fff;
+      border: none;
+      font-weight: 800;
+      padding: 14px 20px;
+      border-radius: 100px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 700px) {
+      #modal-producto-contenido {
+        flex-direction: column;
+        padding: 24px 20px;
+      }
+    }
+
     @media (max-width: 880px) {
       .hero-grid {
         grid-template-columns: 1fr;
@@ -876,6 +1021,24 @@
       </a>
     </div>
   </div>
+
+  <div id="overlay-modal-producto"></div>
+  <div id="modal-producto">
+    <button id="btn-cerrar-modal-producto">✕</button>
+    <div id="modal-producto-contenido">
+      <div id="modal-producto-imagenes">
+        <img id="modal-producto-img-principal" src="" alt="">
+        <div id="modal-producto-miniaturas"></div>
+      </div>
+      <div id="modal-producto-info">
+        <h3 id="modal-producto-nombre"></h3>
+        <p id="modal-producto-descripcion"></p>
+        <span id="modal-producto-precio"></span>
+        <button id="modal-producto-agregar">🛒 Añadir al carrito</button>
+      </div>
+    </div>
+  </div>
+
   <div class="ribbon"></div>
 
   <section class="hero">
@@ -1060,9 +1223,9 @@
     function crearTarjeta(producto) {
       return `
       <div class="prod-card">
-        <div class="prod-photo"><img src="img/${producto.foto}" alt="${producto.nombre}"></div>
+        <div class="prod-photo abrir-modal-producto" data-foto="${producto.foto}" style="cursor:pointer;"><img src="img/${producto.foto}" alt="${producto.nombre}"></div>
         <div class="prod-info">
-          <h3>${producto.nombre}</h3>
+          <h3 class="abrir-modal-producto" data-foto="${producto.foto}" style="cursor:pointer;">${producto.nombre}</h3>
           <p>${producto.descripcion}</p>
           <span class="prod-price">${formatearPrecio(producto.precio)}</span><br>
           <button class="prod-link btn-agregar-carrito" data-foto="${producto.foto}" style="border:none;cursor:pointer;background:none;font:inherit;">🛒 Añadir al carrito</button>
@@ -1088,6 +1251,11 @@
           btn.textContent = "✓ Agregado";
           setTimeout(() => { btn.textContent = textoOriginal; }, 1000);
         });
+      });
+
+      // Clic en la foto o el nombre abre la vista rápida del producto
+      grid.querySelectorAll(".abrir-modal-producto").forEach(el => {
+        el.addEventListener("click", () => abrirModalProducto(el.dataset.foto));
       });
     }
 
@@ -1228,6 +1396,75 @@
     overlay.addEventListener("click", cerrarCarrito);
 
     renderCarrito();
+
+    /* ==================== MODAL DE VISTA RÁPIDA DE PRODUCTO ====================
+       Al hacer clic en la foto o el nombre de un producto, se abre un panel
+       grande con la imagen, descripción, precio y botón de agregar al carrito.
+       Si un producto tiene un array "fotos" con varias imágenes, se muestran
+       miniaturas para cambiar entre ellas. Si no, se usa solo su "foto".
+    ================================================================ */
+    const overlayModal = document.getElementById("overlay-modal-producto");
+    const modalProducto = document.getElementById("modal-producto");
+    const modalImgPrincipal = document.getElementById("modal-producto-img-principal");
+    const modalMiniaturas = document.getElementById("modal-producto-miniaturas");
+    const modalNombre = document.getElementById("modal-producto-nombre");
+    const modalDescripcion = document.getElementById("modal-producto-descripcion");
+    const modalPrecio = document.getElementById("modal-producto-precio");
+    const modalBtnAgregar = document.getElementById("modal-producto-agregar");
+
+    function abrirModalProducto(foto) {
+      const producto = productos.find(p => p.foto === foto);
+      if (!producto) return;
+
+      // Si el producto tiene varias fotos (producto.fotos = ["a.jpg","b.jpg"]) se usan todas;
+      // si no, se usa solo su foto principal.
+      const listaFotos = producto.fotos && producto.fotos.length ? producto.fotos : [producto.foto];
+
+      modalImgPrincipal.src = `img/${listaFotos[0]}`;
+      modalImgPrincipal.alt = producto.nombre;
+      modalImgPrincipal.classList.remove("zoom");
+      modalNombre.textContent = producto.nombre;
+      modalDescripcion.textContent = producto.descripcion;
+      modalPrecio.textContent = formatearPrecio(producto.precio);
+      modalBtnAgregar.dataset.foto = producto.foto;
+
+      modalMiniaturas.innerHTML = listaFotos.length > 1
+        ? listaFotos.map((f, i) => `<img src="img/${f}" class="${i === 0 ? 'activa' : ''}" data-foto="${f}">`).join("")
+        : "";
+
+      modalMiniaturas.querySelectorAll("img").forEach(mini => {
+        mini.addEventListener("click", () => {
+          modalImgPrincipal.src = `img/${mini.dataset.foto}`;
+          modalImgPrincipal.classList.remove("zoom");
+          modalMiniaturas.querySelectorAll("img").forEach(m => m.classList.remove("activa"));
+          mini.classList.add("activa");
+        });
+      });
+
+      overlayModal.classList.add("overlay-abierto");
+      modalProducto.classList.add("modal-abierto");
+    }
+
+    function cerrarModalProducto() {
+      overlayModal.classList.remove("overlay-abierto");
+      modalProducto.classList.remove("modal-abierto");
+      modalImgPrincipal.classList.remove("zoom");
+    }
+
+    document.getElementById("btn-cerrar-modal-producto").addEventListener("click", cerrarModalProducto);
+    overlayModal.addEventListener("click", cerrarModalProducto);
+
+    // Clic en la imagen grande hace zoom (y otro clic lo quita)
+    modalImgPrincipal.addEventListener("click", () => {
+      modalImgPrincipal.classList.toggle("zoom");
+    });
+
+    modalBtnAgregar.addEventListener("click", () => {
+      agregarAlCarrito(modalBtnAgregar.dataset.foto);
+      const textoOriginal = modalBtnAgregar.textContent;
+      modalBtnAgregar.textContent = "✓ Agregado";
+      setTimeout(() => { modalBtnAgregar.textContent = textoOriginal; }, 1000);
+    });
   </script>
 
   <div class="ribbon"></div>
