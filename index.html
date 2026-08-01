@@ -862,15 +862,26 @@
       min-width: 0;
     }
 
-    #modal-producto-img-principal {
+    #modal-producto-media {
       width: 100%;
       border-radius: 16px;
+      overflow: hidden;
+    }
+
+    #modal-producto-media img,
+    #modal-producto-media video {
+      width: 100%;
+      display: block;
+      border-radius: 16px;
       object-fit: cover;
-      cursor: zoom-in;
       transition: transform 0.2s ease;
     }
 
-    #modal-producto-img-principal.zoom {
+    #modal-producto-media img {
+      cursor: zoom-in;
+    }
+
+    #modal-producto-media img.zoom {
       transform: scale(1.6);
       cursor: zoom-out;
     }
@@ -882,18 +893,38 @@
       overflow-x: auto;
     }
 
-    #modal-producto-miniaturas img {
+    .mini-item {
+      position: relative;
       width: 60px;
       height: 60px;
-      object-fit: cover;
-      border-radius: 10px;
-      cursor: pointer;
-      border: 2px solid transparent;
       flex-shrink: 0;
+      cursor: pointer;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid transparent;
     }
 
-    #modal-producto-miniaturas img.activa {
+    .mini-item img,
+    .mini-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .mini-item.activa {
       border-color: var(--pink-deep);
+    }
+
+    .mini-play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 1.1rem;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+      pointer-events: none;
     }
 
     #modal-producto-info {
@@ -1027,7 +1058,7 @@
     <button id="btn-cerrar-modal-producto">✕</button>
     <div id="modal-producto-contenido">
       <div id="modal-producto-imagenes">
-        <img id="modal-producto-img-principal" src="" alt="">
+        <div id="modal-producto-media"></div>
         <div id="modal-producto-miniaturas"></div>
       </div>
       <div id="modal-producto-info">
@@ -1204,7 +1235,7 @@
         nombre: "RAMO BUCHON DE STICH CON PATO",
         descripcion: "Ramo buchón de stich con pato hecho a mano para sorprender a esa bella dama.",
         precio: 300,
-        categoria: "damas"
+        categoria: "dia-de-la-novia"
       },
       {
         foto: "producto9.png",
@@ -1226,6 +1257,20 @@
         descripcion: "Ramo especial para graduación y promoción con carnerito graduado hecho a mano para resaltar tu momento especial",
         precio: 230,
         categoria: "graduacion-promocion"
+      },
+      {
+        foto: "producto12.png",
+        nombre: "RAMO AZUL",
+        descripcion: "Ramo buchón hecho a mano para una persona especial, viene corona, rosas eternas, mariposas 3d y arreglo en general",
+        precio: 350,
+        categoria: "dia-de-la-novia"
+      },
+      {
+        foto: "producto14.png",
+        nombre: "RAMO WINNIE THE POOH",
+        descripcion: "Ramo buchón hecho a mano para una persona especial, viene rosas eternas hechas a mano con un peluche de WINNIE POOH",
+        precio: 350,
+        categoria: "dia-de-la-novia"
       },
       // 👆 Copia este tipo de bloque (con la coma arriba) para agregar un producto nuevo
     ];
@@ -1422,44 +1467,66 @@
 
     /* ==================== MODAL DE VISTA RÁPIDA DE PRODUCTO ====================
        Al hacer clic en la foto o el nombre de un producto, se abre un panel
-       grande con la imagen, descripción, precio y botón de agregar al carrito.
-       Si un producto tiene un array "fotos" con varias imágenes, se muestran
-       miniaturas para cambiar entre ellas. Si no, se usa solo su "foto".
+       grande con la imagen (o video), descripción, precio y botón de agregar.
+       Si un producto tiene un array "fotos" con varios archivos, se muestran
+       miniaturas para cambiar entre ellos — pueden ser fotos y/o videos mezclados.
+       El sistema detecta solo mirando la extensión del archivo (.mp4, .webm, etc.)
     ================================================================ */
     const overlayModal = document.getElementById("overlay-modal-producto");
     const modalProducto = document.getElementById("modal-producto");
-    const modalImgPrincipal = document.getElementById("modal-producto-img-principal");
+    const modalMedia = document.getElementById("modal-producto-media");
     const modalMiniaturas = document.getElementById("modal-producto-miniaturas");
     const modalNombre = document.getElementById("modal-producto-nombre");
     const modalDescripcion = document.getElementById("modal-producto-descripcion");
     const modalPrecio = document.getElementById("modal-producto-precio");
     const modalBtnAgregar = document.getElementById("modal-producto-agregar");
 
+    const extensionesVideo = ["mp4", "webm", "mov", "ogg"];
+
+    function esVideo(nombreArchivo) {
+      const extension = nombreArchivo.split(".").pop().toLowerCase();
+      return extensionesVideo.includes(extension);
+    }
+
+    function mostrarMediaPrincipal(nombreArchivo, nombreProducto) {
+      if (esVideo(nombreArchivo)) {
+        modalMedia.innerHTML = `<video src="img/${nombreArchivo}" controls playsinline></video>`;
+      } else {
+        modalMedia.innerHTML = `<img src="img/${nombreArchivo}" alt="${nombreProducto}">`;
+        // Clic en la imagen grande hace zoom (y otro clic lo quita)
+        modalMedia.querySelector("img").addEventListener("click", (e) => {
+          e.target.classList.toggle("zoom");
+        });
+      }
+    }
+
     function abrirModalProducto(foto) {
       const producto = productos.find(p => p.foto === foto);
       if (!producto) return;
 
-      // Si el producto tiene varias fotos (producto.fotos = ["a.jpg","b.jpg"]) se usan todas;
+      // Si el producto tiene varios archivos (producto.fotos = ["a.jpg","b.mp4"]) se usan todos;
       // si no, se usa solo su foto principal.
-      const listaFotos = producto.fotos && producto.fotos.length ? producto.fotos : [producto.foto];
+      const listaMedia = producto.fotos && producto.fotos.length ? producto.fotos : [producto.foto];
 
-      modalImgPrincipal.src = `img/${listaFotos[0]}`;
-      modalImgPrincipal.alt = producto.nombre;
-      modalImgPrincipal.classList.remove("zoom");
+      mostrarMediaPrincipal(listaMedia[0], producto.nombre);
       modalNombre.textContent = producto.nombre;
       modalDescripcion.textContent = producto.descripcion;
       modalPrecio.textContent = formatearPrecio(producto.precio);
       modalBtnAgregar.dataset.foto = producto.foto;
 
-      modalMiniaturas.innerHTML = listaFotos.length > 1
-        ? listaFotos.map((f, i) => `<img src="img/${f}" class="${i === 0 ? 'activa' : ''}" data-foto="${f}">`).join("")
+      modalMiniaturas.innerHTML = listaMedia.length > 1
+        ? listaMedia.map((f, i) => {
+          const activa = i === 0 ? "activa" : "";
+          return esVideo(f)
+            ? `<div class="mini-item ${activa}" data-foto="${f}"><video src="img/${f}" muted></video><span class="mini-play">▶</span></div>`
+            : `<div class="mini-item ${activa}" data-foto="${f}"><img src="img/${f}"></div>`;
+        }).join("")
         : "";
 
-      modalMiniaturas.querySelectorAll("img").forEach(mini => {
+      modalMiniaturas.querySelectorAll(".mini-item").forEach(mini => {
         mini.addEventListener("click", () => {
-          modalImgPrincipal.src = `img/${mini.dataset.foto}`;
-          modalImgPrincipal.classList.remove("zoom");
-          modalMiniaturas.querySelectorAll("img").forEach(m => m.classList.remove("activa"));
+          mostrarMediaPrincipal(mini.dataset.foto, producto.nombre);
+          modalMiniaturas.querySelectorAll(".mini-item").forEach(m => m.classList.remove("activa"));
           mini.classList.add("activa");
         });
       });
@@ -1471,16 +1538,11 @@
     function cerrarModalProducto() {
       overlayModal.classList.remove("overlay-abierto");
       modalProducto.classList.remove("modal-abierto");
-      modalImgPrincipal.classList.remove("zoom");
+      modalMedia.innerHTML = "";
     }
 
     document.getElementById("btn-cerrar-modal-producto").addEventListener("click", cerrarModalProducto);
     overlayModal.addEventListener("click", cerrarModalProducto);
-
-    // Clic en la imagen grande hace zoom (y otro clic lo quita)
-    modalImgPrincipal.addEventListener("click", () => {
-      modalImgPrincipal.classList.toggle("zoom");
-    });
 
     modalBtnAgregar.addEventListener("click", () => {
       agregarAlCarrito(modalBtnAgregar.dataset.foto);
