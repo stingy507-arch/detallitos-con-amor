@@ -842,13 +842,25 @@
     #btn-cerrar-modal-producto {
       position: absolute;
       top: 14px;
-      right: 18px;
-      font-size: 1.4rem;
+      right: 14px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 800;
       border: none;
-      background: none;
+      background: var(--white, #fff);
       cursor: pointer;
       color: var(--pink-deep);
+      box-shadow: 0 4px 14px -2px rgba(71, 36, 54, 0.35);
       z-index: 5;
+    }
+
+    #btn-cerrar-modal-producto:hover {
+      background: var(--pink-pastel-2);
     }
 
     #modal-producto-contenido {
