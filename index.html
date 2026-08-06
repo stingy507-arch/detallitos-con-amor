@@ -1144,10 +1144,11 @@
     const categorias = [
       { id: "damas", nombre: "Detalle para Dama", emoji: "💗", habilitado: true },
       { id: "varones", nombre: "Detalle para Varón", emoji: "🎩", habilitado: true },
-      { id: "infantiles", nombre: "Infantiles", emoji: "🧸", habilitado: true },
+      { id: "infantiles", nombre: "Infantiles", emoji: "🧒👦", habilitado: true },
       { id: "aniversario", nombre: "Aniversario", emoji: "💍", habilitado: true },
       { id: "ramos-buchones", nombre: "Ramos Buchones", emoji: "💐", habilitado: true },
       { id: "box-sorpresa", nombre: "Box Sorpresa", emoji: "🎁", habilitado: true },
+      { id: "peluches", nombre: "Peluches", emoji: "🧸", habilitado: true },
       { id: "dia-de-la-novia", nombre: "Día de la novia", emoji: "👑", habilitado: false },
       { id: "graduacion-promocion", nombre: "Graduación y promoción", emoji: "🎓", habilitado: true },
       { id: "san-valentin", nombre: "San Valentín", emoji: "❤️", habilitado: false },
@@ -1155,7 +1156,7 @@
       { id: "dia-de-la-madre", nombre: "Día de la Madre", emoji: "👩", habilitado: false },
       { id: "dia-del-maestro", nombre: "Día del Maestro", emoji: "🍎", habilitado: false },
       { id: "flores-amarillas", nombre: "Flores Amarillas", emoji: "🌼", habilitado: false },
-      { id: "extras", nombre: "Extras", emoji: "✨", habilitado: true }
+      { id: "extras-personalizados", nombre: "Extras Personalizados", emoji: "✨", habilitado: true },
       // 👆 Copia este tipo de bloque (con la coma arriba) para agregar una categoría nueva
     ];
 
@@ -1193,21 +1194,21 @@
         nombre: "Fotoroca personalizada",
         descripcion: "Piedra decorativa con tu foto favorita grabada FULL COLOR.",
         precio: 30,
-        categoria: "extras"
+        categoria: "extras-personalizado"
       },
       {
         foto: "extra-taza-magica.jpg",
         nombre: "Taza mágica personalizada",
         descripcion: "Taza que revela tu foto o diseño al agregar líquido caliente.",
         precio: 20,
-        categoria: "extras"
+        categoria: "extras-personalizado"
       },
       {
         foto: "extra-vinil.jpg",
         nombre: "Vinil decorativo personalizado 20cm x 25cm",
         descripcion: "Adhesivo de vinil con el diseño o nombre que elijas.",
         precio: 10,
-        categoria: "extras"
+        categoria: "extras-personalizado"
       },
       {
         foto: "producto5.png",
@@ -1462,6 +1463,22 @@
         descripcion: "VASO STANLEY DE TEMATICA DE CR7, disponible en varios colores, diseñado para mantener bebidas frias y calientes, INCLUYE: Gaseosa en lata, snack de papas INKA, chocolate picaras, y snack de mani.",
         precio: 95,
         categoria: "varones"    
+      }, 
+      {
+        foto: "producto47.png",
+        fotos: ["producto47.png", "producto48.png"], 
+        nombre: "BOX MI BELLA PRINCESA",
+        descripcion: "Incluye: 1 corona de PRINCESA,taza de CRISTAL con fotos de recuerdo, 1 ramo de rosas, gaseosa en lata y chocolate obsesión más una cajita de dulce artesanal.",
+        precio: 125,
+        categoria: "box-sorpresa"    
+      }, 
+      {
+        foto: "producto49.png",
+        fotos: ["producto49.png","producto50.png", "producto51.png"], 
+        nombre: "PANDA KAWAI CON DURAZNO",
+        descripcion: "Hermoso panda kawai con durazno.",
+        precio: 160,
+        categoria: "peluche"    
       }, 
       
 
