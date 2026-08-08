@@ -415,7 +415,7 @@
       transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
     }
 
-    .cat-btn:hover:not(.deshabilitado) {
+    .cat-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 10px 22px -12px rgba(196, 20, 94, 0.35);
     }
@@ -424,28 +424,6 @@
       background: var(--pink);
       color: var(--white);
       border-color: var(--pink);
-    }
-
-    .cat-btn.activo .cat-estado {
-      color: rgba(255, 255, 255, 0.85);
-    }
-
-    .cat-btn.deshabilitado {
-      opacity: 0.5;
-      cursor: not-allowed;
-      border-style: dashed;
-    }
-
-    .cat-estado {
-      font-size: 0.6rem;
-      font-weight: 800;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-      color: var(--plum-soft);
-    }
-
-    .cat-btn.deshabilitado .cat-estado {
-      color: #B23A3A;
     }
 
     .catalogo-vacio {
@@ -1086,7 +1064,7 @@
         </div>
       </div>
       <div class="hero-art">
-        <img class="card-photo" src="img/stitch-con-pato-ramo.jpg" alt="Ramo sorpresa Stitch Detallitos con Amor">
+        <img class="card-photo" src="img/stitch-con-pato-ramo.jpg" alt="Ramo sorpresa Stitch Detallitos con Amor" fetchpriority="high" decoding="async">
         <div class="float-tag tag-1">🎈 Hecho a mano</div>
         <div class="float-tag tag-2">💝 Entrega en Satipo</div>
       </div>
@@ -1191,8 +1169,8 @@
         categoria: "damas"
       },
       {
-        foto: "producto54.png",
-         fotos: ["producto54.png", "producto55.png",],
+        foto: "producto54.jpg",
+         fotos: ["producto54.jpg", "producto55.jpg",],
         nombre: "CUADRO 3D LAS ORQUIDEAS DE LOS RECUERDOS",
         descripcion: "Cuadro 3D de 20cm x 25cm con 4cm de gruesor, incluye luces, disponible en cualquier tematica, consultar diseño A LOS NÚMEROS DE WHATSAPP. ",
         precio: 70,
@@ -1220,21 +1198,21 @@
         categoria: "extras-personalizados"
       },
       {
-        foto: "producto5.png",
+        foto: "producto5.jpg",
         nombre: "Canasta conejita ROSADA",
         descripcion: "Canasta coquete, peluche de coneja importada,chocolate monfer, rosas artificiales y decorativos.",
         precio: 130,
         categoria: "damas"
       },
       {
-        foto: "producto6.png",
+        foto: "producto6.jpg",
         nombre: "Ramo girasol encantado",
         descripcion: "Ramo de 6 tulipanes con 1 bello girasol eterno, con follaje decorativo.",
         precio: 100,
         categoria: "damas"
       },
       {
-        foto: "producto7.png",
+        foto: "producto7.jpg",
         nombre: "Canasta conejita de las nieves",
         descripcion: "Canasta coquete, peluche de coneja importada,chocolate monfer, rosas artificiales y decorativos.",
         precio: 130,
@@ -1248,36 +1226,36 @@
         categoria: "ramos-buchones"
       },
       {
-        foto: "producto9.png",
+        foto: "producto9.jpg",
         nombre: "RAMO PURPURA",
         descripcion: "Ramo buchón de rosas lila con peluche de ANGELA por el día de la novia, perfecto para la chica ideal",
         precio: 250,
         categoria: "ramos-buchones"
       },
       {
-        foto: "producto10.png",
+        foto: "producto10.jpg",
         nombre: "RAMO HELLOKITTY",
         descripcion: "Ramo buchón de rosas blancas con peluche de HELLOKITTY por el día de la novia,perfecto para la novia ideal",
         precio: 300,
         categoria: "ramos-buchones"
       },
       {
-        foto: "producto11.png",
+        foto: "producto11.jpg",
         nombre: "RAMO CARNERO GRADUADO",
         descripcion: "Ramo especial para graduación y promoción con carnerito graduado hecho a mano para resaltar tu momento especial",
         precio: 130,
         categoria: "graduacion-promocion"
       },
       {
-        foto: "producto12.png",
-        fotos: ["producto12.png", "producto13.png"],
+        foto: "producto12.jpg",
+        fotos: ["producto12.jpg", "producto13.jpg"],
         nombre: "RAMO AZUL",
         descripcion: "Ramo buchón hecho a mano para una persona especial, viene corona, rosas eternas, mariposas 3d y arreglo en general",
         precio: 350,
         categoria: "ramos-buchones"
       },
       {
-        foto: "producto14.png",
+        foto: "producto14.jpg",
         nombre: "RAMO WINNIE THE POOH",
         descripcion: "Ramo buchón hecho a mano para una persona especial, viene rosas eternas hechas a mano con un peluche de WINNIE POOH",
         precio: 250,
@@ -1305,22 +1283,22 @@
         categoria: "graduacion-promocion"
       },
       {
-        foto: "producto18.png",
-        fotos: ["producto18.png", "producto19.png", "producto20.mp4"],
+        foto: "producto18.jpg",
+        fotos: ["producto18.jpg", "producto19.jpg", "producto20.mp4"],
         nombre: "BOX MESSI 2026",
         descripcion: "BOX en forma de camiseta que incluye: cuadro 3D de messi, tomatodo personalizado de messi, dulce vizzio y snack de papitas",
         precio: 100,
         categoria: "varones"
       },
       {
-        foto: "producto21.png",
+        foto: "producto21.jpg",
         nombre: "DETALLE REY AZUL",
         descripcion: "Detalle de tonos azul que incluye: Peluche parchesito, gaseosa en lata, dulces y muchos más.",
         precio: 100,
         categoria: "varones"
       },
       {
-        foto: "producto22.png",
+        foto: "producto22.jpg",
         nombre: "DETALLE ALIANZA CAMPEÓN",
         descripcion: "Detalle con base HEXAGONAL DE MADERA que incluye: Tomatodo personalizado CON FOTOS, FRASES Y NOMBRES, chocolate monfer, shampoo, peluche de leon ALIANCISTA, vaso termicom frutos secos y globo personalizado.",
         precio: 130,
@@ -1328,163 +1306,163 @@
       },
 
       {
-        foto: "producto23.png",
-        fotos: ["producto23.png", "producto24.png", "producto25.png"],
+        foto: "producto23.jpg",
+        fotos: ["producto23.jpg", "producto24.jpg", "producto25.jpg"],
         nombre: "BOX SORPRESA UNIVERSITARIO GARRA CREMA",
         descripcion: " BOX con frases en VINIL DORADO, viene cuadro 3D personalizado con tematica de UNIVERSITARIO DE DEPORTES, ROSAS ETERNAS y Chocolates",
         precio: 150,
         categoria: "box-sorpresa"
       },
       {
-        foto: "producto26.png",
+        foto: "producto26.jpg",
         nombre: "DETALLE FUERZA CRISTAL",
         descripcion: "Lonchera tematica con PELUCHE HINCHA CRISTAL, UN TOMATODO DEPORTIVO TEMATICA DE CRISTAL INCUYE: FOTOS,FRASES Y NOMBRES; CHOCOLATE VIZZIO, PAPAS PRINGLES Y CERVEZA EN LATA",
         precio: 130,
         categoria: "varones"
       },
       {
-        foto: "producto27.png",
+        foto: "producto27.jpg",
         nombre: "DETALLE HINCHA CREMA",
         descripcion: "Detalle con base HEXAGONAL DE MADERA que incluye: Tomatodo personalizado CON FOTOS, FRASES Y NOMBRES, chocolate monfer, shampoo, peluche de cerdito de la U, chop personalizado, .",
         precio: 130,
         categoria: "varones"
       },
       {
-        foto: "producto28.png",
+        foto: "producto28.jpg",
         nombre: "Muñeca de los recuerdos",
         descripcion: "Detalle de Muñeca hecha a mano con hilos de algodón,taza dorada personalizada,chocolate, flores y decoración en general.",
         precio: 130,
         categoria: "damas"
       },
       {
-        foto: "producto29.png",
+        foto: "producto29.jpg",
         nombre: "DETALLE DE STICH CON CHOCOLATES",
         descripcion: "Detalle con peluche de STICH CABEZÓN ENAMORADO,chocolate, vaso termico CON GRABADO LASER y decoración en general",
         precio: 130,
         categoria: "damas"
       },
       {
-        foto: "producto30.png",
+        foto: "producto30.jpg",
         nombre: "CANASTA FELIZ ANIVERSARIO",
         descripcion: "Detalle para fechas especiales que incluye: Peluche de OSO PANDA, VINO, ROSAS ARTIFICIALES, GLOBO PERSONALIZADO CON FRASES  y CREMA PARA LA PIEL", 
         precio: 200,
         categoria: "aniversario"
       },
       {
-        foto: "producto31.png",
+        foto: "producto31.jpg",
         nombre: "DETALLE LOBO MACHO ALFA",
         descripcion: "INCLUYE:Lobo importado, snack de mani, frutos secos, vizzio, gaseosa en lata", precio: 130,
         categoria: "varones"
       },
       {
-        foto: "producto32.png",
+        foto: "producto32.jpg",
         nombre: "DETALLE LOTZO ENAMORADO",
         descripcion: "INCLUYE: PELUCHE  DE LOTZO, MAQUILLAJE EN GENERAL,ROSAS ENTERNAS, TODO EN UN CAJA CILINDRICA PRENSADA.",
         precio: 130,
         categoria: "damas"
       },
       {
-        foto: "producto33.png",
+        foto: "producto33.jpg",
         nombre: "MINIBOX",
         descripcion: "INCLUYE CAJITA DE VIZZIO, GASEOSA EN LATA, PAPITAS EN SNACK Y ROSITA.",
         precio: 30,
         categoria: "varones"
       },
       {
-        foto: "producto34.png",
+        foto: "producto34.jpg",
         nombre: "DETALLE CAJITA DE LOS RECUERDOS",
         descripcion: "INCLUYE: PELUCHE DE osito, PAPA INKA, TAZA DE AZA DE PELOTA,FRUTOS SECOS cafe altomayo, 2 CERVEZAS y globo con letra personalizado. ",
         precio: 100,
         categoria: "varones"
       },
       {
-        foto: "producto36.png",
+        foto: "producto36.jpg",
         nombre: "DETALLE  CAJITA DEL OSITO FELIZ VERSIÓN 1",
         descripcion: "INCLUYE: PELUCHE de osito parchesito, gaseosa en lata, chocolate heirsher, 2 chocolates monfer y globo burbuja con frase personalizada.",
         precio: 85,
         categoria: "varones"
       },
       {
-        foto: "producto37.png",
+        foto: "producto37.jpg",
         nombre: "DETALLE  CAJITA DEL OSITO FELIZ VERSIÓN 2",
         descripcion: "INCLUYE: PELUCHE de osito parchesito, gaseosa en lata, chocolate heirsher, 2 chocolates monfer y globo burbuja con frase personalizada.",
         precio: 85,
         categoria: "varones"
       },
       {
-        foto: "producto38.png",
+        foto: "producto38.jpg",
         nombre: "DETALLE GOLDENBLACK",
         descripcion: "INCLUYE: VASO TERMICO CON GRABADO LASER, ROSAS ETERNAS, CHOCOLATE Y GLOBO PERSONALIZADO.",
         precio: 75,
         categoria: "varones"
       },
       {
-        foto: "producto39.png",
+        foto: "producto39.jpg",
         nombre: "Detalle pingüino feliz",
         descripcion: "INCLUYE: peluche de pingüino, TOMATODO TERMICO CON GRABADO LASER, dulces y rosas eternas.",
         precio: 150,
         categoria: "varones"
       },
       {
-        foto: "producto40.png",
+        foto: "producto40.jpg",
         nombre: "RAMO DE ROSAS DE LA PRIMAVERA",
         descripcion: "Ramo de diversas rosas eternas y artificiales para esa persona especial.",
         precio: 150,
         categoria: "damas"
       },
       {
-        foto: "producto41.png",
+        foto: "producto41.jpg",
         nombre: "DETALLE MI CHICO SPIDERMAN",
         descripcion: "INCLUYE: PELUCHE DE SPIDERMAN, 1 VASO TERMICO CON GRABADO LASER, AUTO HOTWHEELS, CHOCOLATE VIZZIO, 2 ROSAS ETERNAS Y 1 GLOBO BURBUJA CON FRASE PERSONALIZADO.",
         precio: 100,
         categoria: "infantiles"
       },
       {
-        foto: "producto42.png",
+        foto: "producto42.jpg",
         nombre: "DETALLE DE STICH CON CHOCOLATES",
         descripcion: "Detalle con peluche de STICH,chocolate, vaso termico CON GRABADO LASER y decoración en general",
         precio: 120,
         categoria: "damas"
       },
       {
-        foto: "producto43.png",
+        foto: "producto43.jpg",
         nombre: "DETALLE TAZA PERSONALIZADA",
         descripcion: "Detalle de taza personalizada con fotos, frases y tematica de tu preferencia, incluye: SNACK DE MANI, CAFE ALTOMAYO, HEIRSHER Y 2 MONFER.",
         precio: 45,
         categoria: "varones" 
       },
       {
-        foto: "producto44.png",
+        foto: "producto44.jpg",
         nombre: "VASO STANLEY SANGRE BLANQUIAZUL",
         descripcion: "VASO STANLEY diseñado para mantener bebidas frias y calientes por horas,con una capacidad de 1200ml, con temática de ALIANZA LIMA, e incluye grabado laser y snack en general y cerveza o gaseosa en LATA.",
         precio: 85,
         categoria: "varones" 
       },
       {
-        foto: "producto45.png",
+        foto: "producto45.jpg",
         nombre: "VASO STANLEY PERSONALIZADO CON STICKER PERMANENTE",
         descripcion: "VASO STANLEY diseñado para mantener bebidas frias y calientes, personalizado con sticker permanente, disponible en diversas temáticas como: CR7,MESSI, ALIANZA LIMA, DE HELLO KITTY, LOTZO, GATITA MARIE, DRAGON BALL, NARUTO, DIVERSAS PROFESIONES, ETC.",
         precio: 65,
-        categoria: "extras"   
+        categoria: "extras-personalizados"
       },
       {
-        foto: "producto46.png",
+        foto: "producto46.jpg",
         nombre: "VASO STANLEY DE CRISTIANO RONALDO",
         descripcion: "VASO STANLEY DE TEMATICA DE CR7, disponible en varios colores, diseñado para mantener bebidas frias y calientes, INCLUYE: Gaseosa en lata, snack de papas INKA, chocolate picaras, y snack de mani.",
         precio: 95,
         categoria: "varones"    
       }, 
       {
-        foto: "producto47.png",
-        fotos: ["producto47.png", "producto48.png"], 
+        foto: "producto47.jpg",
+        fotos: ["producto47.jpg", "producto48.jpg"], 
         nombre: "BOX MI BELLA PRINCESA",
         descripcion: "Incluye: 1 corona de PRINCESA,taza de CRISTAL con fotos de recuerdo, 1 ramo de rosas, gaseosa en lata y chocolate obsesión más una cajita de dulce artesanal.",
         precio: 125,
         categoria: "box-sorpresa"    
       }, 
       {
-        foto: "producto49.png",
-        fotos: ["producto49.png","producto50.png", "producto51.png"], 
+        foto: "producto49.jpg",
+        fotos: ["producto49.jpg","producto50.jpg", "producto51.jpg"], 
         nombre: "PANDA KAWAI CON DURAZNO",
         descripcion: "Hermoso panda kawai con durazno.",
         precio: 160,
@@ -1534,7 +1512,7 @@
     function crearTarjeta(producto) {
       return `
       <div class="prod-card">
-        <div class="prod-photo abrir-modal-producto" data-foto="${producto.foto}" style="cursor:pointer;"><img src="img/${producto.foto}" alt="${producto.nombre}"></div>
+        <div class="prod-photo abrir-modal-producto" data-foto="${producto.foto}" style="cursor:pointer;"><img src="img/${producto.foto}" alt="${producto.nombre}" loading="lazy" decoding="async"></div>
         <div class="prod-info">
           <h3 class="abrir-modal-producto" data-foto="${producto.foto}" style="cursor:pointer;">${producto.nombre}</h3>
           <p>${producto.descripcion}</p>
@@ -1572,20 +1550,19 @@
 
     function renderFiltros() {
       const cont = document.getElementById("filtros-categorias");
-      const todas = [{ id: "todos", nombre: "Todos", emoji: "🎀", habilitado: true }, ...categorias];
+      // Las categorías con habilitado:false no se muestran al cliente (aún no tienen productos listos).
+      const visibles = categorias.filter(c => c.habilitado);
+      const todas = [{ id: "todos", nombre: "Todos", emoji: "🎀", habilitado: true }, ...visibles];
 
       cont.innerHTML = todas.map(cat => {
         const esActivo = cat.id === filtroActivo ? "activo" : "";
-        const esDeshabilitado = cat.habilitado ? "" : "deshabilitado";
-        const estado = cat.id === "todos" ? "" : `<span class="cat-estado">${cat.habilitado ? "Habilitado" : "Deshabilitado"}</span>`;
         return `
-        <button class="cat-btn ${esActivo} ${esDeshabilitado}" data-id="${cat.id}" ${cat.habilitado ? "" : "disabled"}>
+        <button class="cat-btn ${esActivo}" data-id="${cat.id}">
           <span>${cat.emoji} ${cat.nombre}</span>
-          ${estado}
         </button>`;
       }).join("");
 
-      cont.querySelectorAll(".cat-btn:not(.deshabilitado)").forEach(btn => {
+      cont.querySelectorAll(".cat-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           filtroActivo = btn.dataset.id;
           renderFiltros();
@@ -1646,7 +1623,7 @@
       lista.innerHTML = carrito.length
         ? carrito.map(item => `
           <div class="carrito-item">
-            <img src="img/${item.foto}" alt="${item.nombre}">
+            <img src="img/${item.foto}" alt="${item.nombre}" loading="lazy" decoding="async">
             <div class="carrito-item-info">
               <h4>${item.nombre}</h4>
               <span class="carrito-item-precio">${formatearPrecio(item.precio)} c/u</span>
@@ -1733,9 +1710,9 @@
 
     function mostrarMediaPrincipal(nombreArchivo, nombreProducto) {
       if (esVideo(nombreArchivo)) {
-        modalMedia.innerHTML = `<video src="img/${nombreArchivo}" controls playsinline></video>`;
+        modalMedia.innerHTML = `<video src="img/${nombreArchivo}" controls playsinline preload="metadata"></video>`;
       } else {
-        modalMedia.innerHTML = `<img src="img/${nombreArchivo}" alt="${nombreProducto}">`;
+        modalMedia.innerHTML = `<img src="img/${nombreArchivo}" alt="${nombreProducto}" decoding="async">`;
         // Clic en la imagen grande hace zoom (y otro clic lo quita)
         modalMedia.querySelector("img").addEventListener("click", (e) => {
           e.target.classList.toggle("zoom");
@@ -1761,8 +1738,8 @@
         ? listaMedia.map((f, i) => {
           const activa = i === 0 ? "activa" : "";
           return esVideo(f)
-            ? `<div class="mini-item ${activa}" data-foto="${f}"><video src="img/${f}" muted></video><span class="mini-play">▶</span></div>`
-            : `<div class="mini-item ${activa}" data-foto="${f}"><img src="img/${f}"></div>`;
+            ? `<div class="mini-item ${activa}" data-foto="${f}"><video src="img/${f}" muted preload="metadata"></video><span class="mini-play">▶</span></div>`
+            : `<div class="mini-item ${activa}" data-foto="${f}"><img src="img/${f}" loading="lazy" decoding="async"></div>`;
         }).join("")
         : "";
 
@@ -1800,7 +1777,7 @@
   <section id="sobre" class="sobre">
     <div class="wrap sobre-grid">
       <div class="sobre-photo">
-        <img src="img/giane.jpg" alt="Regalo personalizado Detallitos con Amor">
+        <img src="img/giane.jpg" alt="Regalo personalizado Detallitos con Amor" loading="lazy" decoding="async">
       </div>
       <div class="sobre-text">
         <span class="eyebrow">Sobre nosotros</span>
