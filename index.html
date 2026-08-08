@@ -337,6 +337,7 @@
     }
 
     .prod-photo {
+      position: relative;
       aspect-ratio: 3/4;
       overflow: hidden;
     }
@@ -387,6 +388,91 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+    }
+
+    /* Buscador del catálogo */
+    .cat-buscador {
+      position: relative;
+      max-width: 420px;
+      margin: 0 auto 24px;
+    }
+
+    .cat-buscador input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 40px 12px 18px;
+      border: 2px solid var(--pink-pastel);
+      border-radius: 999px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      color: var(--pink-deep);
+      background: var(--white);
+      outline: none;
+      transition: border-color .2s ease;
+    }
+
+    .cat-buscador input:focus {
+      border-color: var(--pink);
+    }
+
+    .cat-buscador input::placeholder {
+      color: var(--plum-soft);
+      opacity: .7;
+    }
+
+    #btn-limpiar-busqueda {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: 50%;
+      background: var(--pink-pastel);
+      color: var(--pink-deep);
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #btn-limpiar-busqueda.oculto {
+      display: none;
+    }
+
+    /* Etiqueta destacada sobre la foto del producto */
+    .prod-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      z-index: 1;
+    }
+
+    .prod-badge.mas-vendido {
+      background: var(--pink);
+    }
+
+    .prod-badge.ultimas-unidades {
+      background: #B23A3A;
+    }
+
+    /* Precio de oferta con tachado */
+    .prod-precio-original {
+      text-decoration: line-through;
+      color: var(--plum-soft);
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-right: 6px;
     }
 
     /* Filtros de categoría del catálogo */
@@ -1079,6 +1165,10 @@
         <p>Una selección de nuestros bouquets y regalos más pedidos. Escríbenos y lo personalizamos según la ocasión.
         </p>
       </div>
+      <div class="cat-buscador">
+        <input type="text" id="buscador-catalogo" placeholder="Buscar producto, ej: taza, vaso stanley..." autocomplete="off">
+        <button id="btn-limpiar-busqueda" type="button" aria-label="Limpiar búsqueda" class="oculto">✕</button>
+      </div>
       <div class="cat-filtros" id="filtros-categorias"></div>
       <div class="grid-catalogo" id="grid-catalogo"></div>
     </div>
@@ -1101,14 +1191,25 @@
      👉 Cuando termine una campaña (ej: se acabó San Valentín y ya no
         quedan detalles), simplemente cambia esa categoría a:
             habilitado: false
-        El botón de esa categoría se ve apagado, con la palabra
-        "Deshabilitado" debajo, y sus productos dejan de mostrarse
-        en "Todos". Cuando vuelva la temporada, lo regresas a "true".
+        El botón de esa categoría deja de mostrarse en el filtro y
+        sus productos dejan de aparecer en "Todos". Cuando vuelva la
+        temporada, lo regresas a "true".
 
   2) PRODUCTOS
      Cada producto ahora también lleva:
        - categoria: el id de la categoría a la que pertenece (debe ser
          EXACTAMENTE igual a un "id" de la lista de categorías de arriba)
+
+     Campos OPCIONALES (solo agrégalos si los necesitas):
+       - destacado: "mas-vendido" o "ultimas-unidades"
+         Muestra una etiqueta de color sobre la foto del producto.
+         Ejemplo: destacado: "mas-vendido"
+         Si no quieres etiqueta, simplemente no escribas esta línea.
+
+       - precioOriginal: un número mayor al precio actual
+         Muestra el precio anterior tachado, como en una oferta.
+         Ejemplo: precio: 80, precioOriginal: 100
+         Si no quieres mostrar oferta, no escribas esta línea.
 
   3) Para agregar un producto nuevo: sube la foto a la carpeta "img" y
      copia un bloque { ... } dentro de "productos", cambiando foto,
@@ -1499,6 +1600,7 @@
     const numeroWhatsapp1 = "51931189917";
     const numeroWhatsapp2 = "51925461540";
     let filtroActivo = "todos";
+    let textoBusqueda = "";
 
     function formatearPrecio(precio) {
       return "S/ " + Number(precio).toFixed(2).replace(".00", "");
@@ -1510,13 +1612,20 @@
     }
 
     function crearTarjeta(producto) {
+      const badgeTexto = producto.destacado === "mas-vendido" ? "Más vendido"
+        : producto.destacado === "ultimas-unidades" ? "Últimas unidades"
+        : "";
+      const badge = badgeTexto ? `<span class="prod-badge ${producto.destacado}">${badgeTexto}</span>` : "";
+      const precioOferta = producto.precioOriginal && producto.precioOriginal > producto.precio
+        ? `<span class="prod-precio-original">${formatearPrecio(producto.precioOriginal)}</span>`
+        : "";
       return `
       <div class="prod-card">
-        <div class="prod-photo abrir-modal-producto" data-foto="${producto.foto}" style="cursor:pointer;"><img src="img/${producto.foto}" alt="${producto.nombre}" loading="lazy" decoding="async"></div>
+        <div class="prod-photo abrir-modal-producto" data-foto="${producto.foto}" style="cursor:pointer;">${badge}<img src="img/${producto.foto}" alt="${producto.nombre}" loading="lazy" decoding="async"></div>
         <div class="prod-info">
           <h3 class="abrir-modal-producto" data-foto="${producto.foto}" style="cursor:pointer;">${producto.nombre}</h3>
           <p>${producto.descripcion}</p>
-          <span class="prod-price">${formatearPrecio(producto.precio)}</span><br>
+          ${precioOferta}<span class="prod-price">${formatearPrecio(producto.precio)}</span><br>
           <button class="prod-link btn-agregar-carrito" data-foto="${producto.foto}" style="border:none;cursor:pointer;background:none;font:inherit;">🛒 Añadir al carrito</button>
         </div>
       </div>`;
@@ -1528,9 +1637,16 @@
       if (filtroActivo !== "todos") {
         lista = lista.filter(p => p.categoria === filtroActivo);
       }
+      if (textoBusqueda.trim() !== "") {
+        const q = textoBusqueda.trim().toLowerCase();
+        lista = lista.filter(p =>
+          p.nombre.toLowerCase().includes(q) ||
+          p.descripcion.toLowerCase().includes(q)
+        );
+      }
       grid.innerHTML = lista.length
         ? lista.map(crearTarjeta).join("")
-        : `<p class="catalogo-vacio">Aún no hay detalles en esta categoría. ¡Vuelve pronto! 💕</p>`;
+        : `<p class="catalogo-vacio">No encontramos detalles con esa búsqueda. Prueba con otra palabra o escríbenos 💕</p>`;
 
       // Cada vez que se redibuja el catálogo hay que reconectar los botones nuevos
       grid.querySelectorAll(".btn-agregar-carrito").forEach(btn => {
@@ -1668,6 +1784,24 @@
 
     renderFiltros();
     renderCatalogo();
+
+    const inputBusqueda = document.getElementById("buscador-catalogo");
+    const btnLimpiarBusqueda = document.getElementById("btn-limpiar-busqueda");
+
+    inputBusqueda.addEventListener("input", () => {
+      textoBusqueda = inputBusqueda.value;
+      btnLimpiarBusqueda.classList.toggle("oculto", textoBusqueda.trim() === "");
+      renderCatalogo();
+    });
+
+    btnLimpiarBusqueda.addEventListener("click", () => {
+      textoBusqueda = "";
+      inputBusqueda.value = "";
+      btnLimpiarBusqueda.classList.add("oculto");
+      inputBusqueda.focus();
+      renderCatalogo();
+    });
+
     const botonCarrito = document.getElementById("btn-carrito");
     const overlay = document.getElementById("overlay-carrito");
     const panel = document.getElementById("panel-carrito");
